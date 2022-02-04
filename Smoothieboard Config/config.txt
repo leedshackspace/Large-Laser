@@ -1,0 +1,103 @@
+# LHS LASER CUTTER CONFIG
+# Partly stolen from LondonHackSpace
+
+arm_solution                                 cartesian
+
+default_feed_rate                            6000             # Default rate ( mm/minute ) for G1/G2/G3 moves
+default_seek_rate                            8000             # Default rate ( mm/minute ) for G0 moves
+mm_per_arc_segment                           0.0              # Fixed length for line segments that divide arcs 0 to disable
+mm_max_arc_error                             0.001            # The maximum error for line segments that divide arcs 0 to disable
+
+acceleration				     1400
+junction_deviation       		     0.005
+
+x_axis_max_speed                             60000            # mm/min
+y_axis_max_speed                             60000            # mm/min
+z_axis_max_speed                             300              # mm/min
+
+alpha_steps_per_mm  89
+beta_steps_per_mm   89
+gamma_steps_per_mm   1600
+
+uart0.baud_rate                              115200           # Baud rate for the default hardware serial port
+
+network.enable                               false            # enable the ethernet network services
+
+## Laser module configuration
+laser_module_enable                           true            # Whether to activate the laser module at all. All configuration is
+                                                              # ignored if false.
+laser_module_pin                              3.25            # this pin will be PWMed to control the laser. 
+                                                              # Only P2.0 - P2.5, P1.18, P1.20, P1.21, P1.23, P1.24, P1.26, P3.25, P3.26
+                                                              # can be used since laser requires hardware PWM
+#laser_module_ttl_pin                         3.26!           # Laser Enable
+laser_module_maximum_power                    0.90            # this is the maximum duty cycle that will be applied to the laser
+laser_module_minimum_power                    0.15            # This is a value just below the minimum duty cycle that keeps the laser
+                                                              # active without actually burning.
+laser_module_default_power                    0.2             # This is the default laser power that will be used for cuts if a power has not been specified.  The value is a scale between                                                              
+                                                              # the maximum and minimum power levels specified above
+laser_module_pwm_period                       20              # this sets the pwm frequency as the period in microseconds
+laser_module_proportional_power               true
+
+switch.laserfire.enable true
+#switch.laserfire.output_pin 3.26!
+switch.laserfire.output_pin 2.11!
+switch.laserfire.output_type digital
+switch.laserfire.input_on_command M3
+switch.laserfire.input_off_command M5
+
+# endstop config
+endstops_enable true
+# alpha
+alpha_max_endstop 1.28^!
+alpha_homing_direction home_to_max
+alpha_min 0
+alpha_max 1240
+alpha_max_travel 1250
+# beta
+beta_max_endstop 1.26^!
+beta_homing_direction home_to_max
+beta_min 0
+beta_max 890
+beta_max_travel 900
+# gamma
+gamma_min_endstop 1.25^!
+gamma_homing_direction home_to_min
+gamma_min 0
+gamma_max 200
+gamma_max_travel 210
+
+alpha_limit_enable                           false
+beta_limit_enable                            false
+gamma_limit_enable                           false 
+
+# Soft Endstops
+soft_endstop.enable    true
+# Alpha
+soft_endstop.x_min     0
+soft_endstop.x_max     1230
+# Beta
+soft_endstop.y_min     0
+soft_endstop.y_max     890
+# Gamma
+soft_endstop.z_min     0
+soft_endstop.z_max     200
+# Prevent Death
+soft_endstop.halt      false
+
+
+on_boot_gcode	/sd/on_boot.gcode
+on_boot_gcode_enable	true
+
+# Board config; coppied from BTT github
+leds_disable true
+play_led_disable true
+
+alpha_step_pin                               0.4!              
+beta_step_pin                                2.1!              # Pin for beta stepper step signal
+#gamma_step_pin                               0.20!              # Pin for gamma stepper step signal
+gamma_step_pin                               0.11!              # Pin for gamma stepper step signal
+
+alpha_dir_pin                                0.5!              
+beta_dir_pin                                 2.2!             # Pin for beta stepper direction, add '!' to reverse direction
+#gamma_dir_pin                                0.21             # Pin for gamma stepper direction, add '!' to reverse direction
+gamma_dir_pin                                2.13             # Pin for gamma stepper direction, add '!' to reverse direction
